@@ -1,0 +1,15 @@
+# Database
+sqlalchemy>=2.0.36
+alembic>=1.14.0
+psycopg2-binary>=2.9.10
+pgvector>=0.3.6
+pydantic-settings>=2.6.0
+
+# API & face POC
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+python-multipart>=0.0.12
+deepface>=0.0.93
+tf-keras>=2.21.0
+opencv-python-headless>=4.10.0
+numpy>=1.26.0

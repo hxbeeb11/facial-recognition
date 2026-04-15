@@ -1,0 +1,27 @@
+# Monorepo root
+.DS_Store
+Thumbs.db
+*.log
+
+# Backend — facial-recognition-be
+facial-recognition-be/.env
+facial-recognition-be/.venv/
+facial-recognition-be/venv/
+facial-recognition-be/__pycache__/
+facial-recognition-be/**/*.py[cod]
+facial-recognition-be/.pytest_cache/
+facial-recognition-be/.mypy_cache/
+facial-recognition-be/data/uploads/
+
+# Frontend — facial-recognition-fe
+facial-recognition-fe/node_modules/
+facial-recognition-fe/.next/
+facial-recognition-fe/out/
+facial-recognition-fe/build/
+facial-recognition-fe/.vercel
+facial-recognition-fe/.env.local
+facial-recognition-fe/.pnpm-debug.log*
+facial-recognition-fe/npm-debug.log*
+facial-recognition-fe/yarn-debug.log*
+facial-recognition-fe/yarn-error.log*
+facial-recognition-fe/*.tsbuildinfo

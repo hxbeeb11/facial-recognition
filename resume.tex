@@ -1,0 +1,421 @@
+\documentclass[10pt, letterpaper]{article}
+
+% Packages:
+\usepackage[
+    ignoreheadfoot, % set margins without considering header and footer
+    top=2 cm, % seperation between body and page edge from the top
+    bottom=2 cm, % seperation between body and page edge from the bottom
+    left=2 cm, % seperation between body and page edge from the left
+    right=2 cm, % seperation between body and page edge from the right
+    footskip=1.0 cm, % seperation between body and footer
+    % showframe % for debugging 
+]{geometry} % for adjusting page geometry
+\usepackage{titlesec} % for customizing section titles
+\usepackage{tabularx} % for making tables with fixed width columns
+\usepackage{array} % tabularx requires this
+\usepackage[dvipsnames]{xcolor} % for coloring text
+\definecolor{primaryColor}{RGB}{0, 0, 0} % define primary color
+\usepackage{enumitem} % for customizing lists
+\usepackage{fontawesome5} % for using icons
+\usepackage{amsmath} % for math
+\usepackage[
+    pdftitle={Habeeb's CV},
+    pdfauthor={Habeeb},
+    pdfcreator={LaTeX with RenderCV},
+    colorlinks=true,
+    urlcolor=primaryColor
+]{hyperref} % for links, metadata and bookmarks
+\usepackage[pscoord]{eso-pic} % for floating text on the page
+\usepackage{calc} % for calculating lengths
+\usepackage{bookmark} % for bookmarks
+\usepackage{lastpage} % for getting the total number of pages
+\usepackage{changepage} % for one column entries (adjustwidth environment)
+\usepackage{paracol} % for two and three column entries
+\usepackage{ifthen} % for conditional statements
+\usepackage{needspace} % for avoiding page brake right after the section title
+\usepackage{iftex} % check if engine is pdflatex, xetex or luatex
+
+% Ensure that generate pdf is machine readable/ATS parsable:
+\ifPDFTeX
+    \input{glyphtounicode}
+    \pdfgentounicode=1
+    \usepackage[T1]{fontenc}
+    \usepackage[utf8]{inputenc}
+    \usepackage{lmodern}
+\fi
+
+\usepackage{charter}
+
+% Underline support for links
+\usepackage[normalem]{ulem}
+
+% Some settings:
+\raggedright
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt} % remove space before adjustwidth environment
+\pagestyle{empty} % no header or footer
+\setcounter{secnumdepth}{0} % no section numbering
+\setlength{\parindent}{0pt} % no indentation
+\setlength{\topskip}{0pt} % no top skip
+\setlength{\columnsep}{0.15cm} % set column seperation
+\pagenumbering{gobble} % no page numbering
+
+\titleformat{\section}{\needspace{4\baselineskip}\bfseries\large}{}{0pt}{}[\vspace{1pt}\titlerule]
+
+\titlespacing{\section}{
+    % left space:
+    -1pt
+}{
+    % top space:
+    0.3 cm
+}{
+    % bottom space:
+    0.2 cm
+} % section title spacing
+
+\renewcommand\labelitemi{$\bullet$} % standard bullet points for ATS compatibility
+\newenvironment{highlights}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=0 cm + 10pt
+    ]
+}{
+    \end{itemize}
+} % new environment for highlights
+
+
+\newenvironment{highlightsforbulletentries}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=10pt
+    ]
+}{
+    \end{itemize}
+} % new environment for highlights for bullet entries
+
+\newenvironment{onecolentry}{
+    \begin{adjustwidth}{
+        0 cm + 0.00001 cm
+    }{
+        0 cm + 0.00001 cm
+    }
+}{
+    \end{adjustwidth}
+} % new environment for one column entries
+
+\newenvironment{twocolentry}[2][]{
+    \onecolentry
+    \def\secondColumn{#2}
+    \setcolumnwidth{\fill, 4.5 cm}
+    \begin{paracol}{2}
+}{
+    \switchcolumn \raggedleft \secondColumn
+    \end{paracol}
+    \endonecolentry
+} % new environment for two column entries
+
+\newenvironment{threecolentry}[3][]{
+    \onecolentry
+    \def\thirdColumn{#3}
+    \setcolumnwidth{, \fill, 4.5 cm}
+    \begin{paracol}{3}
+    {\raggedright #2} \switchcolumn
+}{
+    \switchcolumn \raggedleft \thirdColumn
+    \end{paracol}
+    \endonecolentry
+} % new environment for three column entries
+
+\newenvironment{header}{
+    \setlength{\topsep}{0pt}\par\kern\topsep\centering\linespread{1.5}
+}{
+    \par\kern\topsep
+} % new environment for the header
+
+\newcommand{\placelastupdatedtext}{% \placetextbox{<horizontal pos>}{<vertical pos>}{<stuff>}
+  \AddToShipoutPictureFG*{% Add <stuff> to current page foreground
+    \put(
+        \LenToUnit{\paperwidth-2 cm-0 cm+0.05cm},
+        \LenToUnit{\paperheight-1.0 cm}
+    ){\vtop{{\null}\makebox[0pt][c]{
+        \small\color{gray}\textit{Last updated in September 2024}\hspace{\widthof{Last updated in September 2024}}
+    }}}%
+  }%
+}%
+
+% save the original href command in a new command:
+\let\hrefOriginal\href
+\let\hrefWithoutArrow\hrefOriginal
+
+% underline all hyperlinks (including those using \hrefWithoutArrow)
+\renewcommand{\href}[2]{\hrefOriginal{#1}{\uline{#2}}}
+\renewcommand{\hrefWithoutArrow}[2]{\hrefOriginal{#1}{\uline{#2}}}
+
+% Define a command for contact info with icons
+\newcommand{\contactinfo}[2]{{\small\textbf{#1}~#2}}
+
+\begin{document}
+    \newcommand{\AND}{\unskip
+        \cleaders\copy\ANDbox\hskip\wd\ANDbox
+        \ignorespaces
+    }
+    \newsavebox\ANDbox
+    \sbox\ANDbox{$|$}
+
+    \begin{header}
+        \fontsize{25 pt}{25 pt}\selectfont Mohammed Habeeb ur Rahman
+
+        \vspace{5 pt}
+
+        \normalsize
+        \begin{center}
+        \contactinfo{\faMapMarkerAlt}{Hyderabad, India} \hspace{1em} 
+        \contactinfo{\faEnvelope}{\hrefWithoutArrow{mailto:mohdhabeeburrahman11@gmail.com}{mohdhabeeburrahman11@gmail.com}} \hspace{1em} 
+        \contactinfo{\faPhone}{\hrefWithoutArrow{tel:+91 9398095436}{+91 9398095436}}
+        
+        \vspace{0.2cm}
+        
+        \contactinfo{\faGlobe}{\hrefWithoutArrow{https://habeeb-tau.vercel.app/}{https://habeeb-tau.vercel.app/}} \hspace{1em} 
+        \contactinfo{\faLinkedin}{\hrefWithoutArrow{https://www.linkedin.com/in/mohdhabeeburrahman/}{linkedin.com/in/mohdhabeeburrahman}} \hspace{1em} 
+        \contactinfo{\faGithub}{\hrefWithoutArrow{https://github.com/hxbeeb11}{github.com/hxbeeb11}}
+        \end{center}
+    \end{header}
+
+    \vspace{5 pt - 0.3 cm}
+
+    \section{Professional Summary}
+    \begin{onecolentry}
+Generative AI Engineer specializing in building Generative AI applications using RAG pipelines, Agentic RAGs, fine-tuning, and instruction-tuning techniques. Experienced in developing applications that integrate LLMs for various use cases. Strong expertise in React/Next.js, Python and Cloud with AWS, Docker, Kubernetes, and monitoring with Prometheus and Grafana.
+    \end{onecolentry}
+
+
+    \section{Technologies}
+    \begin{onecolentry}
+        \textbf{{Generative AI:}} Retrieval Augmented Generation (RAG) systems, Agentic RAGs, Fine-Tuning, Instruction tuning. 
+    \end{onecolentry}
+
+    \vspace{0.2 cm}
+
+    \begin{onecolentry}
+        \textbf{{Front-End:}} HTML, CSS, JavaScript, TypeScript, React.js
+    \end{onecolentry}
+
+    \vspace{0.2 cm}
+
+    \begin{onecolentry}
+        \textbf{{Frameworks \& Libraries:}} LangChain, Node.js, Next.js, Tailwind CSS, Bootstrap
+    \end{onecolentry}
+
+    \vspace{0.2 cm}
+
+    \begin{onecolentry}
+        \textbf{{Programming Languages:}} Python, JavaScript
+    \end{onecolentry}
+
+    \vspace{0.2 cm}
+
+    \begin{onecolentry}
+        \textbf{{DevOps:}} AWS, Docker, DockerHub, Kubernetes, Git, Prometheus, Grafana
+    \end{onecolentry}
+
+    \vspace{0.2 cm}
+    
+    \begin{onecolentry}
+        \textbf{{Databases:}} MongoDB
+    \end{onecolentry}
+
+    \section{Experience}
+    \begin{twocolentry}{
+        Dec 2024 - Feb 2025
+    }
+        \textbf{GGS INFORMATION SERVICES} \\
+        Machine Learning Intern\end{twocolentry}
+
+    \vspace{0.10 cm}
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Assisted in 3D model compression techniques for optimizing engineering 3D assets
+            \item Built a Text-to-3D generation side project leveraging generative AI for 3D model synthesis
+        \end{highlights}
+    \end{onecolentry}
+
+    \vspace{0.10 cm}
+    \begin{twocolentry}{
+        Sept 2025 - Present
+    }
+        \textbf{AI4AndhraPolice} \\
+        Artificial Intelligence Intern\end{twocolentry}
+
+    \vspace{0.10 cm}
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Contributed to the development of Investigation Copilot, a generative AI tool designed to assist police investigation officers in POCSO cases
+            \item Led the Docs2Data project — an intelligent document digitalization tool that extracts structured data from order PDFs (transfer, promotion, leave, pay fixation, disciplinary proceedings) using category-specific schemas
+            \item Implemented keyword matching and natural language search over saved document metadata for efficient retrieval
+        \end{highlights}
+    \end{onecolentry}
+
+    \section{Projects}
+    \begin{onecolentry}
+        \textbf{RAG-Powered Knowledge System with Vector Embeddings}  
+    \end{onecolentry}
+
+    \vspace{0.10 cm}
+
+    \begin{onecolentry}
+        \textbf{GitHub:} \href{https://github.com/hxbeeb11/RAG-project-for-hadiths}
+        {github.com/hxbeeb11/RAG-project-for-hadiths}  
+    \end{onecolentry}
+
+    \vspace{0.10 cm}
+
+    \begin{onecolentry}
+        \textbf{Tech Stack:} Python, LangChain, Chroma Cloud, Azure OpenAI, BGE-small-en, PDF parsing, Vector embeddings, RAG architecture  
+    \end{onecolentry}
+
+    \vspace{0.10 cm}
+
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Built a production-ready RAG system that parses Sahih Bukhari PDF into 7,039 structured hadith records
+            \item Implemented streaming PDF processing with auto-chunking for Chroma Cloud vector storage (16KB limit compliance)
+            \item Deployed semantic search using BGE-small-en embeddings with Azure OpenAI for scholarly responses
+        \end{highlights}
+    \end{onecolentry}
+
+    \vspace{0.2 cm}
+    
+    \begin{onecolentry}
+        \textbf{WebMind - AI-Powered Web Search Assistant}  
+    \end{onecolentry}
+
+        \vspace{0.10 cm}
+
+    \begin{onecolentry}
+        \textbf{GitHub:} \href{https://github.com/hxbeeb11/WebMind}
+        {https://github.com/hxbeeb11/WebMind}  
+    \end{onecolentry}
+
+    \vspace{0.10 cm}
+
+    \begin{onecolentry}
+        \textbf{Tech Stack:} Next.js 14, React, Tailwind CSS, Together AI API (DeepSeek/Llama), Brave Search API, Cheerio, Vercel  
+    \end{onecolentry}
+
+    \vspace{0.10 cm}
+
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Built an LLM-powered search assistant combining DeepSeek/Llama with real-time web results
+            \item Implemented streaming APIs on Next.js for responsive, serverless delivery
+            \item Added query optimization and transparent reasoning via lightweight web scraping
+        \end{highlights}
+    \end{onecolentry}
+
+    \vspace{0.5 cm}
+
+    \begin{onecolentry}
+        \textbf{GATE AI - Advanced Adaptive Learning Platform}  
+    \end{onecolentry}
+
+    \vspace{0.10 cm}
+
+    \vspace{0.10 cm}
+
+    \begin{onecolentry}
+        \textbf{GitHub:} \href{https://github.com/hxbeeb11/gate-ai}
+        {github.com/hxbeeb11/gate-ai}  
+    \end{onecolentry}
+
+    \vspace{0.10 cm}
+
+    \begin{onecolentry}
+        \textbf{Tech Stack:} Python, Flask, HTML/CSS/JavaScript, Together AI, Supabase, Render, Gunicorn  
+    \end{onecolentry}
+
+    \vspace{0.10 cm}
+
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Built an adaptive GATE prep platform powered by  instruction-tuned LLMs
+            \item Implemented dynamic difficulty progression and explanatory question generation
+            \item Delivered a scalable Flask REST API deployed with Gunicorn
+        \end{highlights}
+    \end{onecolentry}
+
+    \section{DevOps Projects}
+    \begin{onecolentry}
+        \textbf{Secure, Scalable Multi-Availability Zone Application Deployment on AWS (Custom VPC Architecture)}  
+    \end{onecolentry}
+
+    \vspace{0.10 cm}
+
+    \begin{onecolentry}
+        \textbf{Tech Stack:} AWS VPC, EC2, Auto Scaling, ALB, Bastion Host, NAT Gateway, Public/Private Subnets, IAM, Security Groups, CloudWatch  
+    \end{onecolentry}
+
+    \vspace{0.10 cm}
+
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Designed a two-AZ VPC with isolated public/private subnets and Auto Scaling in private subnets for fault tolerance and scalability
+            \item Configured a bastion host for secure SSH to private EC2 instances and deployed an ALB to route traffic to private apps
+            \item Enabled NAT-based egress for private instances, enforced IAM/Security Groups, and added CloudWatch logging/monitoring
+        \end{highlights}
+    \end{onecolentry}
+
+    \vspace{0.2 cm}
+
+    \begin{onecolentry}
+        \textbf{Automated CI/CD Pipeline with AWS CodePipeline \& Docker}  
+    \end{onecolentry}
+
+    \vspace{0.10 cm}
+
+    \begin{onecolentry}
+        \textbf{Tech Stack:} AWS CodePipeline, CodeDeploy, EC2, Docker, GitHub, DockerHub, CodeDeploy Agent  
+    \end{onecolentry}
+
+    \vspace{0.10 cm}
+
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Implemented a CodePipeline triggered by GitHub commits to automate builds and deployments
+            \item Built Docker images and pushed to DockerHub for centralized storage and versioning
+            \item Used CodeDeploy (Agent on EC2) to pull and run the latest container image for consistent releases
+        \end{highlights}
+    \end{onecolentry}
+
+    \vspace{0.2 cm}
+
+    \begin{onecolentry}
+        \textbf{Two-Tier Application Deployment on AWS}  
+    \end{onecolentry}
+
+    \vspace{0.10 cm}
+
+    \begin{onecolentry}
+        \textbf{Tech Stack:} AWS EC2, VPC, Bastion Host, Security Groups, IAM, CloudWatch  
+    \end{onecolentry}
+
+    \vspace{0.10 cm}
+
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Deployed a two-tier setup: frontend on a public EC2 and backend on a private EC2 within one VPC
+            \item Configured the public EC2 as a bastion host for secure SSH access to the private backend
+            \item Applied restrictive Security Group/IAM policies and enabled CloudWatch monitoring for insights
+        \end{highlights}
+    \end{onecolentry}
+
+    \section{Education}
+    \begin{twocolentry}{Dec 2021 – May 2025}
+        \textbf{Usha Rama College of Engineering and Technology} \\
+        BTech in Artificial Intelligence and Machine Learning \\
+    \end{twocolentry}
+\end{document}
