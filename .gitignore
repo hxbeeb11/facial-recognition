@@ -3,6 +3,12 @@
 Thumbs.db
 *.log
 
+# Local / personal docs (not pushed)
+facial recognition plan.docx
+facial recognition plan.txt
+POC_IMPLEMENTATION_PLAN.md
+resume.tex
+
 # Backend — facial-recognition-be
 facial-recognition-be/.env
 facial-recognition-be/.venv/
